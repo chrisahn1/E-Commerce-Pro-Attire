@@ -41,6 +41,8 @@ server.listen(process.env.PORT, () => {
 //   },
 
 //SERVER PACKAGE.JSON(INITIAL)
+// "type": "module",
+// "main": "server.js",
 // "scripts": {
 //     "start": "tsx server.ts",
 //     "dev": "tsx watch server.ts",
