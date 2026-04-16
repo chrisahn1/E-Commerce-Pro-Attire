@@ -40,6 +40,11 @@ server.listen(process.env.PORT, () => {
 //     "preview": "vite preview"
 //   },
 
+// "start": "react-scripts start",
+//   "build": "react-scripts build",
+//   "test": "react-scripts test",
+//   "eject": "react-scripts eject"
+
 //SERVER PACKAGE.JSON(INITIAL)
 // "type": "module",
 // "main": "server.js",
@@ -48,3 +53,8 @@ server.listen(process.env.PORT, () => {
 //     "dev": "tsx watch server.ts",
 //     "lint": "eslint . --ext ts,js --report-unused-disable-directives --max-warnings 0"
 //   },
+
+// "test": "echo \"Error: no test specified\" && exit 1",
+//     "start": "nodemon index.js",
+//     "build": "react-scripts build",
+//     "dev": "nodemon index.js"
