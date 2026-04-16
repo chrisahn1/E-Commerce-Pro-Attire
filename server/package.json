@@ -1,12 +1,12 @@
 {
   "name": "full-stack-project-template-server",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js",
-    "build": "react-scripts build",
-    "dev": "nodemon index.js"
+    "start": "tsx server.ts",
+    "dev": "tsx watch server.ts",
+    "lint": "eslint . --ext ts,js --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
     "argon2": "^0.40.1",
