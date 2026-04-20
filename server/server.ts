@@ -2,6 +2,8 @@
 import 'dotenv/config';
 import express from 'express';
 import pg from 'pg';
+import argon2 from 'argon2';
+import cors from 'cors';
 import { ClientError, errorMiddleware } from './lib/index.js';
 
 const db = new pg.Pool({
@@ -21,6 +23,8 @@ app.use(express.static(reactStaticDir));
 // Static directory for file uploads server/public/
 app.use(express.static(uploadsStaticDir));
 app.use(express.json());
+
+app.use('/api', cors({ origin: ['http://localhost:5173'] }));
 
 app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello, World!' });
