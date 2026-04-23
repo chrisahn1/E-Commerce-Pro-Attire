@@ -9,3 +9,5 @@
 --      ('Learn to code', false),
 --      ('Build projects', false),
 --      ('Get a job', false);
+
+INSERT INTO "users" ("username", "email", "hashpassword") VALUES ('hash', 'hash@gmail.com', 'hasher');
