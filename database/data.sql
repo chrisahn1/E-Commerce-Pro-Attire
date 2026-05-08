@@ -16,6 +16,7 @@
 
 -- DELETING USER
 -- DELETE FROM "users" WHERE "users_id"='1';
+-- (Must delete all rows where purchase id matches with user id)
 
 -- GET USER INFO FOR CONTEXT
 -- SELECT users_id, username, email, cart, shoplist, purchaselist FROM "users" WHERE "users_id"='1';
@@ -59,7 +60,7 @@
 
 
 -- GET CART
--- SELECT cart FROM "users" WHERE "users_id"='1';
+-- SELECT "cart" FROM "users" WHERE "users_id"='1';
 
 -- --------------------------SHOPLIST------------------------------
 
@@ -97,13 +98,34 @@
 -- GET SHOPLIST
 -- SELECT shoplist FROM "users" WHERE "users_id"='1';
 
--- --------------------------PURCHASELIST------------------------------
+-- --------------------------PURCHASES TABLE------------------------------
 
 -- ADDING CART INTO PURCHASELIST BASED ON USER AND CREATE PURCHASELIST ID
+-- const purchaseId = uuidv4();
+-- INSERT INTO "purchases" ("purchase_id", "users_id", "total_amount", "user_address", "user_card", "purchase_date")
+-- VALUES ('550e8400-e29b-41d4-a716-446655440000', 1, 150.67, '11122 Wise Street, Los Angeles, CA 99999', '{"credit_card_number":"4242 4242 4242 4242", "cvc":"123", "exp_date":"06/29"}', '2026-05-08');
+
+-- DELETING PURCHASES FROM PURCHASES TABLE BASED ON SELECTED
+-- DELETE FROM "purchases" WHERE "purchase_id"='550e8400-e29b-41d4-a716-446655440000'
+-- AND NOT EXISTS (SELECT 1 FROM "purchase_items" WHERE "purchase_id"='550e8400-e29b-41d4-a716-446655440000');
+
+-- GET PURCHASES TABLE
+-- SELECT
+--       p.purchase_id,
+--       p.total_amount,
+--       p.user_address,
+--       p.purchase_date,
+--       json_agg(pi.*) AS items
+--     FROM purchases p
+--     LEFT JOIN "purchase_items" pi ON p.purchase_id = pi.purchase_id
+--     WHERE p.users_id = '1'
+--     GROUP BY p.purchase_id
+--     ORDER BY p.purchase_date DESC
 
 
--- DELETING CART PURCHASE FROM PURCHASELIST BASED ON USER AND PURCHASELIST ID
-
-
--- GET PURCHASELIST
--- SELECT purchaselist FROM "users" WHERE "users_id"='1';
+-- --------------------------PURCHASE_ITEMS TABLE------------------------------
+--ADDING INDIVIDUAL ORDERED ITEMS FROM PURCHASES TABLE
+-- INSERT INTO "purchase_items" ("purchase_id", "product_id", "quantity", "price")
+-- VALUES ('550e8400-e29b-41d4-a716-446655440000', 1, 2, 50.45);
+--DELETING(CANCELLING) INDIVIDUAL ORDERED ITEM
+-- DELETE FROM "purchase_items" WHERE "purchase_id"='550e8400-e29b-41d4-a716-446655440000' AND "item_id"=1;
