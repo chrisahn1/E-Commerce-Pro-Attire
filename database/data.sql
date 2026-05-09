@@ -127,5 +127,6 @@
 --ADDING INDIVIDUAL ORDERED ITEMS FROM PURCHASES TABLE
 -- INSERT INTO "purchase_items" ("purchase_id", "product_id", "quantity", "price")
 -- VALUES ('550e8400-e29b-41d4-a716-446655440000', 1, 2, 50.45);
+
 --DELETING(CANCELLING) INDIVIDUAL ORDERED ITEM
 -- DELETE FROM "purchase_items" WHERE "purchase_id"='550e8400-e29b-41d4-a716-446655440000' AND "item_id"=1;
