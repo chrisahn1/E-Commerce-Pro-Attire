@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import { ClientError } from './client-error.js';
 
-const secret = process.env.TOKEN_SECRET ?? '';
-if (!secret) throw new Error('TOKEN_SECRET not found in env');
+// const secret = process.env.TOKEN_SECRET ?? '';
+const secret = process.env.ACCESS_TOKEN ?? '';
+if (!secret) throw new Error('ACCESS_TOKEN not found in env');
 
 export function authMiddleware(
   req: Request,

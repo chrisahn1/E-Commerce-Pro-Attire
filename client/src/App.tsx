@@ -2,6 +2,7 @@
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
+import Userpage from './pages/Userpage';
 // import reactLogo from './assets/react.svg';
 // import viteLogo from '/vite.svg';
 import './App.css';
@@ -29,6 +30,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/userpage" element={<Userpage />} />
           </Routes>
         </HashRouter>
       </div>
