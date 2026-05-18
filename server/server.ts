@@ -3,6 +3,7 @@ import 'dotenv/config';
 import express from 'express';
 import pg from 'pg';
 import argon2 from 'argon2';
+import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import { ClientError, errorMiddleware } from './lib/index.js';
 
