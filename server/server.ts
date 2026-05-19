@@ -31,6 +31,20 @@ app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello, World!' });
 });
 
+app.post('/api/signup', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+    const newData = await db.query(
+      'INSERT INTO "users" ("username", "email", "hashpassword") VALUES ($1, $2, $3) RETURNING *',
+      [username, email, password]
+    );
+    res.status(200).json(newData);
+  } catch (error: unknown) {
+    if (error instanceof Error) return error.message;
+    return String(error);
+  }
+});
+
 /*
  * Handles paths that aren't handled by any other route handler.
  * It responds with `index.html` to support page refreshes with React Router.
