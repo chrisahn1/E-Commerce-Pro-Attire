@@ -28,12 +28,33 @@ export default function Signup() {
     console.log(username_input);
     console.log(email_input);
     console.log(password_input);
+    try {
+      const body = {
+        username: username_input,
+        email: email_input,
+        password: password_input,
+      };
+      //127.0.0.1:5173/
+      //http:localhost:5173/
+      const response = await fetch('http://localhost:5173/api/signup', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error: unknown) {
+      if (error instanceof Error) return error.message;
+      return String(error);
+    }
     navigate('/');
   };
 
   return (
     <div>
-      <div>Login</div>
+      <div>Signup</div>
       <div>
         <form onSubmit={handleSubmit}>
           <label>Username</label>
@@ -61,7 +82,7 @@ export default function Signup() {
             required
           />
           <button className="submitButton" type="submit">
-            Login
+            Signup
           </button>
         </form>
       </div>
