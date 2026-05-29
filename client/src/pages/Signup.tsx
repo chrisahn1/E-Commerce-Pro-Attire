@@ -36,7 +36,7 @@ export default function Signup() {
       };
       //127.0.0.1:5173/
       //http:localhost:5173/
-      const response = await fetch('http://localhost:5173/api/signup', {
+      const response = await fetch('http://127.0.0.1:5173/api/signup', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
@@ -44,7 +44,7 @@ export default function Signup() {
       });
 
       const result = await response.json();
-      console.log(result);
+      console.log('signed up results: ', result);
     } catch (error: unknown) {
       if (error instanceof Error) return error.message;
       return String(error);
