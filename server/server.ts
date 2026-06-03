@@ -53,6 +53,25 @@ app.post('/api/signup', async (req, res) => {
   }
 });
 
+app.post('/api/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const userData = await db.query(
+      `SELECT users_id, username, email, hashpassword`,
+      [email, password]
+    );
+    res.status(200).json(userData);
+  } catch (error: unknown) {
+    if (error instanceof Error) return error.message;
+    return String(error);
+  }
+});
+
+app.delete('/api/deleteusers', async (req, res) => {
+  await db.query('DELETE FROM users');
+  res.status(200).json({ message: 'Deleted all users' });
+});
+
 /*
  * Handles paths that aren't handled by any other route handler.
  * It responds with `index.html` to support page refreshes with React Router.
