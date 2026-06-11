@@ -39,7 +39,7 @@ app.get('/api/hello', (req, res) => {
   res.json({ message: 'Hello, World!' });
 });
 
-app.post('/api/signup', async (req, res) => {
+app.post('/api/signup', async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
     const newData = await db.query(
@@ -48,22 +48,21 @@ app.post('/api/signup', async (req, res) => {
     );
     res.status(200).json(newData);
   } catch (error: unknown) {
-    if (error instanceof Error) return error.message;
-    return String(error);
+    next(error);
   }
 });
 
-app.post('/api/login', async (req, res) => {
+app.post('/api/login', async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const userData = await db.query(
-      `SELECT users_id, username, email, hashpassword`,
-      [email, password]
+    const result = await db.query(
+      `SELECT users_id, username, email, hashpassword FROM users WHERE email=$1`,
+      [email]
     );
+    const userData = result.rows[0];
     res.status(200).json(userData);
   } catch (error: unknown) {
-    if (error instanceof Error) return error.message;
-    return String(error);
+    next(error);
   }
 });
 
