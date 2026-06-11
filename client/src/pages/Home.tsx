@@ -16,22 +16,26 @@ export default function Home() {
     setPassword(e.target.value);
   };
 
-  const handleSubmit = async () => {
-    // e.preventDefault();
-    console.log(email_input);
-    console.log(password_input);
-    const body = {
-      email: email_input,
-      password: password_input,
-    };
-    const response = await fetch('http://127.0.0.1:5173/api/login', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    const result = await response.json();
-    console.log('logged in: ', result);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const body = {
+        email: email_input,
+        password: password_input,
+      };
+      // 'http://127.0.0.1:5173/api/login'
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const result = await response.json();
+      console.log('logged in: ', result);
+      navigate('/userpage');
+    } catch (error) {
+      console.error('Network error:', error);
+    }
   };
   return (
     <div>
