@@ -5,7 +5,7 @@ import pg from 'pg';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
-import { ClientError, errorMiddleware } from './lib/index.js';
+import { ClientError, errorMiddleware, authMiddleware } from './lib/index.js';
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -55,16 +55,49 @@ app.post('/api/signup', async (req, res, next) => {
 app.post('/api/login', async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    const result = await db.query(
+    const userData = await db.query(
       `SELECT users_id, username, email, hashpassword FROM users WHERE email=$1`,
       [email]
     );
-    const userData = result.rows[0];
+
+    if (userData.rows.length === 0) {
+      res.status(200).json('user data doesnt exist');
+    } else {
+      const [user] = userData.rows;
+      // const { userId, username, email } = user;
+      const userId = user.users_id;
+
+      const payload = { userID: userId };
+      const accessToken = generateAccessToken(payload);
+      const refreshToken = generateRefreshToken(payload);
+      res
+        .status(200)
+        .cookie('refresh_token', refreshToken, {
+          secure: true,
+          httpOnly: true,
+          path: '/',
+        })
+        .json({ accessToken });
+      // res.status(200).json({ users_id, username, email });
+    }
+
     res.status(200).json(userData);
   } catch (error: unknown) {
     next(error);
   }
 });
+
+function generateAccessToken(payload: { userID: number }): string {
+  return jwt.sign(payload, process.env.ACCESS_TOKEN as string, {
+    expiresIn: '15m',
+  });
+}
+
+function generateRefreshToken(payload: { userID: number }): string {
+  return jwt.sign(payload, process.env.REFRESH_TOKEN as string, {
+    expiresIn: '7d',
+  });
+}
 
 app.delete('/api/deleteusers', async (req, res) => {
   await db.query('DELETE FROM users');
