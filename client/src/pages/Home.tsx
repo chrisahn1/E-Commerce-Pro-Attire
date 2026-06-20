@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -31,7 +32,9 @@ export default function Home() {
         body: JSON.stringify(body),
       });
       const result = await response.json();
-      console.log('logged in: ', result);
+      // console.log('logged in: ', result);
+      const decoded_token = jwtDecode(result.access_token);
+      console.log(decoded_token);
       navigate('/userpage');
     } catch (error) {
       console.error('Network error:', error);
