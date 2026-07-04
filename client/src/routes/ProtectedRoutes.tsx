@@ -5,9 +5,6 @@ import { useAuth } from '../context/AuthContext';
 const ProtectRoute = () => {
   const { isAuth, accessToken } = useAuth();
 
-  // const isAuth = false;
-  // const accessToken = '';
-
   const location = useLocation();
 
   if (!isAuth) {

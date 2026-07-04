@@ -25,9 +25,7 @@ export default function Signup() {
 
   const handleSubmit = async () => {
     // e.preventDefault();
-    console.log(username_input);
-    console.log(email_input);
-    console.log(password_input);
+
     try {
       const body = {
         username: username_input,

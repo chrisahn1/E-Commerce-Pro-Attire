@@ -6,6 +6,7 @@ import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import { ClientError, errorMiddleware, authMiddleware } from './lib/index.js';
+import { nextTick } from 'process';
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -102,6 +103,17 @@ function generateRefreshToken(payload: { userID: number }): string {
 app.delete('/api/deleteusers', async (req, res) => {
   await db.query('DELETE FROM users');
   res.status(200).json({ message: 'Deleted all users' });
+});
+
+app.get('/api/username', authMiddleware, async (req, res, next) => {
+  try {
+    const result = await db.query(`SELECT username FROM users WHERE email=$1`, [
+      req.user,
+    ]);
+    res.status(200).json(result.rows[0].username);
+  } catch (error: unknown) {
+    next(error);
+  }
 });
 
 /*

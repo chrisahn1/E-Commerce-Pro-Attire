@@ -10,7 +10,7 @@ export default function Userpage() {
   };
   return (
     <div>
-      <div>Userpage</div>
+      <div>Hello, Userpage</div>
       <div>
         <button onClick={deleteUsers}>Delete Users</button>
       </div>

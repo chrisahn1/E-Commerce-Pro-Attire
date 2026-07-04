@@ -8,7 +8,7 @@
 // } from 'react';
 
 import {
-  useEffect,
+  // useEffect,
   useState,
   useContext,
   createContext,
@@ -46,7 +46,24 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   // const [tokenExp, setTokenExp] = useState(null);
 
-  useEffect(() => {}, []);
+  // useEffect(() => {
+  //   const setUser = async () => {
+  //     const username = await fetch('http://127.0.0.1:5173/api/username', {
+  //       headers: { authorization: accessToken },
+  //       // headers: { Authorization: `Bearer ${accessToken}` },
+  //       credentials: 'include',
+  //     })
+  //       .then((response) => response.json())
+  //       .then((userName) => {
+  //         return userName;
+  //       });
+  //     setCurrentUsername(username);
+  //   };
+
+  //   setUser();
+  // }, []);
+
+  // console.log('current username: ', currentUsername);
   return (
     <AuthContext.Provider
       value={{

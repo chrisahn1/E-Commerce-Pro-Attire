@@ -1,9 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
+import { useAuth } from '../context/AuthContext';
 
 export default function Home() {
   const navigate = useNavigate();
+
+  const { setAccessToken } = useAuth();
+
   const [email_input, setEmail] = useState('');
   const [password_input, setPassword] = useState('');
 
@@ -33,8 +37,9 @@ export default function Home() {
       });
       const result = await response.json();
       // console.log('logged in: ', result);
-      const decoded_token = jwtDecode(result.access_token);
+      const decoded_token = jwtDecode(result.accessToken);
       console.log(decoded_token);
+      setAccessToken(result.accessToken);
       navigate('/userpage');
     } catch (error) {
       console.error('Network error:', error);
