@@ -13,16 +13,31 @@ import {
   useContext,
   createContext,
   ReactNode,
+  Dispatch,
+  SetStateAction,
 } from 'react';
 
 // import { jwtDecode } from 'jwt-decode';
 // import UseRefreshToken from '../hooks/useRefreshToken';
 // import { url } from '../configURL/configURL';
 
-export const AuthContext = createContext({});
+interface AuthContextType {
+  accessToken: string;
+  setAccessToken: Dispatch<SetStateAction<string>>;
+  currentUsername: string;
+  setCurrentUsername: Dispatch<SetStateAction<string>>;
+  currentUserID: string;
+  setCurrentUserID: Dispatch<SetStateAction<string>>;
+  isAuth: boolean;
+  setIsAuth: Dispatch<SetStateAction<boolean>>;
+}
+
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-  const [accessToken, setAccessToken] = useState({});
+  const [accessToken, setAccessToken] = useState('');
 
   const [currentUsername, setCurrentUsername] = useState('');
   const [currentUserID, setCurrentUserID] = useState('');
@@ -50,5 +65,9 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 };
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthContextProvider');
+  }
+  return context;
 };
