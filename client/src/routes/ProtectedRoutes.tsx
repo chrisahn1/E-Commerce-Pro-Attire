@@ -1,12 +1,12 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-// import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 // import { useState } from 'react';
 
 const ProtectRoute = () => {
-  // const { isAuth, accessToken } = useAuth();
+  const { isAuth, accessToken } = useAuth();
 
-  const isAuth = false;
-  const accessToken = '';
+  // const isAuth = false;
+  // const accessToken = '';
 
   const location = useLocation();
 
