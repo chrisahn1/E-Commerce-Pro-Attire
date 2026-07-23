@@ -116,6 +116,37 @@ app.get('/api/username', authMiddleware, async (req, res, next) => {
   }
 });
 
+// *****************new token from refresh token*********************
+// app.post('/users/refresh', async (req, res) => {
+//   try {
+//     const token = req.cookies.refresh_token;
+
+//     if (!token) {
+//       // return res.status(401).json({ error: 'Token not found' });
+//       return res.status(401).json('Token not found');
+//     }
+
+//     jwt.verify(token, process.env.REFRESH_TOKEN as string, (err, payload) => {
+//       if (err) {
+//         // return res.status(403).json({ error: 'Invalid or expired token' });
+//         return res.status(403).json('Invalid or expired token');
+//       }
+//       const access_token = generateAccessToken({ id: payload.id });
+//       const refresh_token = generateRefreshToken({ id: payload.id });
+//       res
+//         .status(200)
+//         .cookie('refresh_token', refresh_token, {
+//           secure: true,
+//           httpOnly: true,
+//           path: '/',
+//         })
+//         .json({ access_token });
+//     });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// });
+
 /*
  * Handles paths that aren't handled by any other route handler.
  * It responds with `index.html` to support page refreshes with React Router.

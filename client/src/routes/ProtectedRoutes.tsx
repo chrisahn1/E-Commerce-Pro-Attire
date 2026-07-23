@@ -10,7 +10,7 @@ const ProtectRoute = () => {
   if (!isAuth) {
     return (
       <div>
-        <h2 style={{ color: 'white' }}>403 Unauthorized</h2>
+        <h2 style={{ color: 'black' }}>403 Unauthorized</h2>
       </div>
     );
   }

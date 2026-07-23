@@ -8,7 +8,7 @@
 // } from 'react';
 
 import {
-  // useEffect,
+  useEffect,
   useState,
   useContext,
   createContext,
@@ -62,6 +62,18 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
   //   setUser();
   // }, []);
+
+  useEffect(() => {
+    const refreshToken = async () => {
+      try {
+        console.log('refresh token test');
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    refreshToken();
+  }, [accessToken]);
 
   // console.log('current username: ', currentUsername);
   return (
