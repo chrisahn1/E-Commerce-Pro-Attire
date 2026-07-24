@@ -3,8 +3,10 @@ import 'dotenv/config';
 import express from 'express';
 import pg from 'pg';
 import argon2 from 'argon2';
-import jwt from 'jsonwebtoken';
+import jwt, { VerifyErrors, JwtPayload } from 'jsonwebtoken';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
+import type { RequestHandler } from 'express';
 import { ClientError, errorMiddleware, authMiddleware } from './lib/index.js';
 import { nextTick } from 'process';
 
@@ -25,6 +27,7 @@ app.use(express.static(reactStaticDir));
 // Static directory for file uploads server/public/
 app.use(express.static(uploadsStaticDir));
 app.use(express.json());
+app.use(cookieParser() as unknown as RequestHandler);
 
 app.use(
   '/api',
@@ -116,36 +119,43 @@ app.get('/api/username', authMiddleware, async (req, res, next) => {
   }
 });
 
-// *****************new token from refresh token*********************
-// app.post('/users/refresh', async (req, res) => {
-//   try {
-//     const token = req.cookies.refresh_token;
+// *****************new access token from refresh token*********************
+app.post('/api/users/refresh', (req, res, next) => {
+  try {
+    const token = req.cookies.refresh_token;
 
-//     if (!token) {
-//       // return res.status(401).json({ error: 'Token not found' });
-//       return res.status(401).json('Token not found');
-//     }
+    if (!token) {
+      throw new ClientError(401, 'refresh token not found');
+    }
 
-//     jwt.verify(token, process.env.REFRESH_TOKEN as string, (err, payload) => {
-//       if (err) {
-//         // return res.status(403).json({ error: 'Invalid or expired token' });
-//         return res.status(403).json('Invalid or expired token');
-//       }
-//       const access_token = generateAccessToken({ id: payload.id });
-//       const refresh_token = generateRefreshToken({ id: payload.id });
-//       res
-//         .status(200)
-//         .cookie('refresh_token', refresh_token, {
-//           secure: true,
-//           httpOnly: true,
-//           path: '/',
-//         })
-//         .json({ access_token });
-//     });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
+    jwt.verify(
+      token,
+      process.env.REFRESH_TOKEN as string,
+      (err: VerifyErrors | null, decoded: JwtPayload | string | undefined) => {
+        if (err || !decoded || typeof decoded === 'string') {
+          return next(new ClientError(403, 'invalid or expired refresh token'));
+        }
+
+        const { userID } = decoded as { userID: number };
+
+        const payload = { userID };
+        const accessToken = generateAccessToken(payload);
+        const refreshToken = generateRefreshToken(payload);
+
+        res
+          .status(200)
+          .cookie('refresh_token', refreshToken, {
+            secure: true,
+            httpOnly: true,
+            path: '/',
+          })
+          .json({ accessToken });
+      }
+    );
+  } catch (error: unknown) {
+    next(error);
+  }
+});
 
 /*
  * Handles paths that aren't handled by any other route handler.
