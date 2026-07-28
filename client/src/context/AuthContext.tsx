@@ -68,7 +68,7 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
 
         if (res.ok) {
           const data = await res.json();
-          setAccessToken(data.access_token);
+          setAccessToken(data.accessToken);
         }
         // if it fails (no cookie, expired refresh token), just stay logged out
       } catch (error) {
