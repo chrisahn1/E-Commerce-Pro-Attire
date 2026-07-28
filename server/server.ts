@@ -80,6 +80,7 @@ app.post('/api/login', async (req, res, next) => {
           secure: true,
           httpOnly: true,
           path: '/',
+          sameSite: 'lax',
         })
         .json({ accessToken });
       // res.status(200).json({ users_id, username, email });
@@ -148,6 +149,7 @@ app.post('/api/users/refresh', (req, res, next) => {
             secure: true,
             httpOnly: true,
             path: '/',
+            sameSite: 'lax',
           })
           .json({ accessToken });
       }
