@@ -74,9 +74,6 @@ export default function Home() {
       <button type="button" onClick={() => navigate('/signup')}>
         Signup
       </button>
-      <button type="button" onClick={() => navigate('/userpage')}>
-        Userpage
-      </button>
     </div>
   );
 }
