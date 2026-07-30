@@ -77,7 +77,7 @@ app.post('/api/login', async (req, res, next) => {
       res
         .status(200)
         .cookie('refresh_token', refreshToken, {
-          secure: true,
+          secure: process.env.NODE_ENV === 'production',
           httpOnly: true,
           path: '/',
           sameSite: 'lax',
@@ -86,7 +86,7 @@ app.post('/api/login', async (req, res, next) => {
       // res.status(200).json({ users_id, username, email });
     }
 
-    res.status(200).json(userData);
+    // res.status(200).json(userData);
   } catch (error: unknown) {
     next(error);
   }
@@ -94,15 +94,16 @@ app.post('/api/login', async (req, res, next) => {
 
 function generateAccessToken(payload: { userId: number }): string {
   return jwt.sign(payload, process.env.ACCESS_TOKEN as string, {
-    expiresIn: '15m',
+    expiresIn: '5s',
   });
 }
-
+// 15m
 function generateRefreshToken(payload: { userId: number }): string {
   return jwt.sign(payload, process.env.REFRESH_TOKEN as string, {
-    expiresIn: '7d',
+    expiresIn: '15s',
   });
 }
+// 7d
 
 // app.delete('/api/deleteusers', async (req, res) => {
 //   await db.query('DELETE FROM users');
@@ -111,7 +112,7 @@ function generateRefreshToken(payload: { userId: number }): string {
 
 app.get('/api/users/username', authMiddleware, async (req, res, next) => {
   try {
-    console.log('req.user: ', req.user);
+    // console.log('req.user: ', req.user);
     const result = await db.query(
       `SELECT username FROM users WHERE users_id=$1`,
       [req.user?.userId]
@@ -148,7 +149,7 @@ app.post('/api/users/refresh', (req, res, next) => {
         res
           .status(200)
           .cookie('refresh_token', refreshToken, {
-            secure: true,
+            secure: process.env.NODE_ENV === 'production',
             httpOnly: true,
             path: '/',
             sameSite: 'lax',
@@ -164,7 +165,7 @@ app.post('/api/users/refresh', (req, res, next) => {
 app.delete('/api/users/logout', (req, res, next) => {
   try {
     res.clearCookie('refresh_token', {
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       httpOnly: true,
       path: '/',
       sameSite: 'lax',

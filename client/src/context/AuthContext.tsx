@@ -81,6 +81,54 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
     tryRefresh();
   }, []); // run once on mount
 
+  useEffect(() => {
+    if (!accessToken) return;
+
+    let exp: number;
+    try {
+      ({ exp } = jwtDecode<{ exp: number }>(accessToken));
+    } catch {
+      return; // malformed token, nothing to schedule
+    }
+
+    const msUntilExpiry = exp * 1000 - Date.now();
+    const buffer = Math.min(5000, msUntilExpiry * 0.2); // never eat the whole lifetime
+    const refreshIn = Math.max(msUntilExpiry - buffer, 0);
+    // console.log(
+    //   '[scheduler] token exp in',
+    //   msUntilExpiry,
+    //   'ms — scheduling refresh in',
+    //   refreshIn,
+    //   'ms'
+    // );
+
+    const timer = setTimeout(async () => {
+      // console.log('[scheduler] refresh timer fired');
+      try {
+        const res = await fetch('/api/users/refresh', {
+          method: 'POST',
+          credentials: 'include',
+        });
+        // console.log('[scheduler] refresh response status:', res.status);
+        if (res.ok) {
+          const data = await res.json();
+          // console.log(
+          //   '[scheduler] got new access token, len:',
+          //   data.accessToken?.length
+          // );
+          setAccessToken(data.accessToken);
+        } else {
+          setAccessToken('');
+        }
+      } catch (error) {
+        // console.error('Scheduled refresh failed:', error);
+        setAccessToken('');
+      }
+    }, refreshIn);
+
+    return () => clearTimeout(timer);
+  }, [accessToken]);
+
   return (
     <AuthContext.Provider
       value={{

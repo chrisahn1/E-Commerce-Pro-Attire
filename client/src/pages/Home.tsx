@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState } from 'react';
-import { jwtDecode } from 'jwt-decode';
+// import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../context/AuthContext';
 
 export default function Home() {
@@ -36,9 +36,8 @@ export default function Home() {
         body: JSON.stringify(body),
       });
       const result = await response.json();
-      // console.log('logged in: ', result);
-      const decoded_token = jwtDecode(result.accessToken);
-      console.log(decoded_token);
+      // const decoded_token = jwtDecode(result.accessToken);
+      // console.log(decoded_token);
       setAccessToken(result.accessToken);
       navigate('/userpage');
     } catch (error) {
