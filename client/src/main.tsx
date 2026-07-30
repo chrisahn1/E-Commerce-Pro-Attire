@@ -4,12 +4,18 @@ import { AuthContextProvider } from '../src/context/AuthContext';
 import App from './App';
 import './index.css';
 
+// ReactDOM.createRoot(document.getElementById('root')!).render(
+//   <React.StrictMode>
+//     <AuthContextProvider>
+//       <App />
+//     </AuthContextProvider>
+//   </React.StrictMode>
+// );
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
-  </React.StrictMode>
+  <AuthContextProvider>
+    <App />
+  </AuthContextProvider>
 );
 
 // import React from 'react';
