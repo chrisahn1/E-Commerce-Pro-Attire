@@ -71,7 +71,7 @@ app.post('/api/login', async (req, res, next) => {
       // const { userId, username, email } = user;
       const userId = user.users_id;
 
-      const payload = { userID: userId };
+      const payload = { userId };
       const accessToken = generateAccessToken(payload);
       const refreshToken = generateRefreshToken(payload);
       res
@@ -92,28 +92,30 @@ app.post('/api/login', async (req, res, next) => {
   }
 });
 
-function generateAccessToken(payload: { userID: number }): string {
+function generateAccessToken(payload: { userId: number }): string {
   return jwt.sign(payload, process.env.ACCESS_TOKEN as string, {
     expiresIn: '15m',
   });
 }
 
-function generateRefreshToken(payload: { userID: number }): string {
+function generateRefreshToken(payload: { userId: number }): string {
   return jwt.sign(payload, process.env.REFRESH_TOKEN as string, {
     expiresIn: '7d',
   });
 }
 
-app.delete('/api/deleteusers', async (req, res) => {
-  await db.query('DELETE FROM users');
-  res.status(200).json({ message: 'Deleted all users' });
-});
+// app.delete('/api/deleteusers', async (req, res) => {
+//   await db.query('DELETE FROM users');
+//   res.status(200).json({ message: 'Deleted all users' });
+// });
 
-app.get('/api/username', authMiddleware, async (req, res, next) => {
+app.get('/api/users/username', authMiddleware, async (req, res, next) => {
   try {
-    const result = await db.query(`SELECT username FROM users WHERE email=$1`, [
-      req.user,
-    ]);
+    console.log('req.user: ', req.user);
+    const result = await db.query(
+      `SELECT username FROM users WHERE users_id=$1`,
+      [req.user?.userId]
+    );
     res.status(200).json(result.rows[0].username);
   } catch (error: unknown) {
     next(error);
@@ -137,9 +139,9 @@ app.post('/api/users/refresh', (req, res, next) => {
           return next(new ClientError(403, 'invalid or expired refresh token'));
         }
 
-        const { userID } = decoded as { userID: number };
+        const { userId } = decoded as { userId: number };
 
-        const payload = { userID };
+        const payload = { userId };
         const accessToken = generateAccessToken(payload);
         const refreshToken = generateRefreshToken(payload);
 
@@ -154,6 +156,20 @@ app.post('/api/users/refresh', (req, res, next) => {
           .json({ accessToken });
       }
     );
+  } catch (error: unknown) {
+    next(error);
+  }
+});
+
+app.delete('/api/users/logout', (req, res, next) => {
+  try {
+    res.clearCookie('refresh_token', {
+      secure: true,
+      httpOnly: true,
+      path: '/',
+      sameSite: 'lax',
+    });
+    res.status(200).json('token deleted.');
   } catch (error: unknown) {
     next(error);
   }
