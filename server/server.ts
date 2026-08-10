@@ -94,13 +94,13 @@ app.post('/api/login', async (req, res, next) => {
 
 function generateAccessToken(payload: { userId: number }): string {
   return jwt.sign(payload, process.env.ACCESS_TOKEN as string, {
-    expiresIn: '5s',
+    expiresIn: '15m',
   });
 }
 // 15m
 function generateRefreshToken(payload: { userId: number }): string {
   return jwt.sign(payload, process.env.REFRESH_TOKEN as string, {
-    expiresIn: '15s',
+    expiresIn: '7d',
   });
 }
 // 7d
@@ -137,6 +137,12 @@ app.post('/api/users/refresh', (req, res, next) => {
       process.env.REFRESH_TOKEN as string,
       (err: VerifyErrors | null, decoded: JwtPayload | string | undefined) => {
         if (err || !decoded || typeof decoded === 'string') {
+          res.clearCookie('refresh_token', {
+            secure: process.env.NODE_ENV === 'production',
+            httpOnly: true,
+            path: '/',
+            sameSite: 'lax',
+          });
           return next(new ClientError(403, 'invalid or expired refresh token'));
         }
 
@@ -144,17 +150,18 @@ app.post('/api/users/refresh', (req, res, next) => {
 
         const payload = { userId };
         const accessToken = generateAccessToken(payload);
-        const refreshToken = generateRefreshToken(payload);
+        // const refreshToken = generateRefreshToken(payload);
 
-        res
-          .status(200)
-          .cookie('refresh_token', refreshToken, {
-            secure: process.env.NODE_ENV === 'production',
-            httpOnly: true,
-            path: '/',
-            sameSite: 'lax',
-          })
-          .json({ accessToken });
+        // res
+        //   .status(200)
+        //   .cookie('refresh_token', refreshToken, {
+        //     secure: process.env.NODE_ENV === 'production',
+        //     httpOnly: true,
+        //     path: '/',
+        //     sameSite: 'lax',
+        //   })
+        //   .json({ accessToken });
+        res.status(200).json({ accessToken });
       }
     );
   } catch (error: unknown) {

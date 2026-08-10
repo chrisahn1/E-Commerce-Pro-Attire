@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { AuthContextProvider } from '../src/context/AuthContext';
 import App from './App';
