@@ -17,8 +17,29 @@ export default function Sidebar() {
     navigate('/', { replace: true });
   };
   return (
-    <div>
+    <div className="sidebar-container">
       <div>Sidebar</div>
+      <div>
+        <button>Home</button>
+      </div>
+      <div>
+        <button>Top Wear</button>
+      </div>
+      <div>
+        <button>Pants</button>
+      </div>
+      <div>
+        <button>Shoes</button>
+      </div>
+      <div>
+        <button>Purchase List</button>
+      </div>
+      <div>
+        <button>Kart</button>
+      </div>
+      <div>
+        <button>Settings</button>
+      </div>
       <div>
         <button onClick={logout}>Logout</button>
       </div>
