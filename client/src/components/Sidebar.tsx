@@ -5,6 +5,34 @@ export default function Sidebar() {
   const { setAccessToken } = useAuth();
   const navigate = useNavigate();
 
+  const home = async () => {
+    navigate('/userpage');
+  };
+
+  const topwear = async () => {
+    navigate('/topwear');
+  };
+
+  const pants = async () => {
+    navigate('/pants');
+  };
+
+  const shoes = async () => {
+    navigate('/shoes');
+  };
+
+  const purchaselist = async () => {
+    navigate('/purchaselist');
+  };
+
+  const kart = async () => {
+    navigate('/kart');
+  };
+
+  const settings = async () => {
+    navigate('/settings');
+  };
+
   const logout = async () => {
     const response = await fetch('/api/users/logout', {
       method: 'DELETE',
@@ -20,25 +48,25 @@ export default function Sidebar() {
     <div className="sidebar-container">
       <div>Sidebar</div>
       <div>
-        <button>Home</button>
+        <button onClick={home}>Home</button>
       </div>
       <div>
-        <button>Top Wear</button>
+        <button onClick={topwear}>Top Wear</button>
       </div>
       <div>
-        <button>Pants</button>
+        <button onClick={pants}>Pants</button>
       </div>
       <div>
-        <button>Shoes</button>
+        <button onClick={shoes}>Shoes</button>
       </div>
       <div>
-        <button>Purchase List</button>
+        <button onClick={purchaselist}>Purchase List</button>
       </div>
       <div>
-        <button>Kart</button>
+        <button onClick={kart}>Kart</button>
       </div>
       <div>
-        <button>Settings</button>
+        <button onClick={settings}>Settings</button>
       </div>
       <div>
         <button onClick={logout}>Logout</button>

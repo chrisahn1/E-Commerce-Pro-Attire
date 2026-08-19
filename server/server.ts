@@ -39,10 +39,6 @@ app.use(
   })
 );
 
-app.get('/api/hello', (req, res) => {
-  res.json({ message: 'Hello, World!' });
-});
-
 app.post('/api/signup', async (req, res, next) => {
   try {
     const { username, email, password } = req.body;

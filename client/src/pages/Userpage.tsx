@@ -1,6 +1,5 @@
 import { useAuth } from '../context/AuthContext';
 // import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
 
 export default function Userpage() {
   const { accessToken } = useAuth();
@@ -24,12 +23,10 @@ export default function Userpage() {
   };
   return (
     <div>
-      <div>
-        <Sidebar />
-      </div>
       {/* <div>
         <button onClick={deleteUsers}>Delete Users</button>
       </div> */}
+      <h1 color="black">Home</h1>
       <div>
         <div>
           <button onClick={testAuth}>Testing Auth</button>
