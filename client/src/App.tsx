@@ -24,8 +24,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
-            <Route element={<Layout />}>
-              <Route element={<ProtectRoute />}>
+            <Route element={<ProtectRoute />}>
+              <Route element={<Layout />}>
                 <Route path="/userpage" element={<Userpage />} />
                 <Route path="/topwear" element={<TopWear />} />
                 <Route path="/pants" element={<Pants />} />

@@ -76,3 +76,17 @@ button:focus-visible {
   justify-content: center;
   background-color: teal;
 }
+
+.navbar-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex; /* lays the <li>s out horizontally */
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.navbar-links a.active {
+  font-weight: 600;
+  border-bottom: 2px solid #333;
+}
