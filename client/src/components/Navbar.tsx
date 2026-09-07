@@ -21,7 +21,7 @@ export default function Navbar() {
     <nav className="navbar">
       <ul className="navbar-links">
         <li>
-          <NavLink to="/userpage">Userpage</NavLink>
+          <NavLink to="/">Home</NavLink>
         </li>
         <li>
           <NavLink to="/topwear">Topwear</NavLink>
@@ -40,6 +40,12 @@ export default function Navbar() {
         </li>
         <li>
           <NavLink to="/settings">Settings</NavLink>
+        </li>
+        <li>
+          <NavLink to="/login">Login</NavLink>
+        </li>
+        <li>
+          <NavLink to="/signup">Sign Up</NavLink>
         </li>
       </ul>
       <div>
