@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 export default function Navbar() {
-  const { setAccessToken } = useAuth();
+  const { isAuth, setAccessToken } = useAuth();
   const navigate = useNavigate();
 
   const logout = async () => {
@@ -32,25 +32,38 @@ export default function Navbar() {
         <li>
           <NavLink to="/shoes">Shoes</NavLink>
         </li>
-        <li>
-          <NavLink to="/purchaselist">Purchase List</NavLink>
-        </li>
-        <li>
-          <NavLink to="/kart">Kart</NavLink>
-        </li>
-        <li>
-          <NavLink to="/settings">Settings</NavLink>
-        </li>
-        <li>
-          <NavLink to="/login">Login</NavLink>
-        </li>
-        <li>
-          <NavLink to="/signup">Sign Up</NavLink>
-        </li>
+        {isAuth && (
+          <>
+            <li>
+              <NavLink to="/purchaselist">Purchase List</NavLink>
+            </li>
+            <li>
+              <NavLink to="/kart">Kart</NavLink>
+            </li>
+            <li>
+              <NavLink to="/settings">Settings</NavLink>
+            </li>
+          </>
+        )}
+
+        {!isAuth && (
+          <>
+            <li>
+              <NavLink to="/login">Login</NavLink>
+            </li>
+            <li>
+              <NavLink to="/signup">Sign Up</NavLink>
+            </li>
+          </>
+        )}
       </ul>
-      <div>
-        <button onClick={logout}>Logout</button>
-      </div>
+      {isAuth && (
+        <>
+          <div>
+            <button onClick={logout}>Logout</button>
+          </div>
+        </>
+      )}
     </nav>
   );
 }

@@ -1,7 +1,5 @@
 // import { useEffect, useState } from 'react';
 import { HashRouter, Routes, Route } from 'react-router-dom';
-// import Home from './pages/Home';
-// import Signup from './pages/Signup';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -13,12 +11,19 @@ import PurchaseList from './pages/PurchaseList';
 import Kart from './pages/Kart';
 import Settings from './pages/Settings';
 
-// import ProtectRoute from './routes/ProtectedRoutes';
+import ProtectRoute from './routes/ProtectedRoutes';
+import GuestRoute from './routes/GuestRoutes';
+import { useAuth } from './context/AuthContext';
 // import reactLogo from './assets/react.svg';
 // import viteLogo from '/vite.svg';
 import './App.css';
 
 export default function App() {
+  const { isLoading } = useAuth();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
   return (
     <>
       <div className="App">
@@ -29,25 +34,16 @@ export default function App() {
               <Route path="/topwear" element={<TopWear />} />
               <Route path="/pants" element={<Pants />} />
               <Route path="/shoes" element={<Shoes />} />
-              <Route path="/purchaselist" element={<PurchaseList />} />
-              <Route path="/kart" element={<Kart />} />
-              <Route path="/settings" element={<Settings />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            {/* <Route path="/" element={<Home />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route element={<ProtectRoute />}>
-              <Route element={<Layout />}>
-                <Route path="/userpage" element={<Userpage />} />
-                <Route path="/topwear" element={<TopWear />} />
-                <Route path="/pants" element={<Pants />} />
-                <Route path="/shoes" element={<Shoes />} />
+              <Route element={<ProtectRoute />}>
                 <Route path="/purchaselist" element={<PurchaseList />} />
                 <Route path="/kart" element={<Kart />} />
                 <Route path="/settings" element={<Settings />} />
               </Route>
-            </Route> */}
+            </Route>
+            <Route element={<GuestRoute />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+            </Route>
           </Routes>
         </HashRouter>
       </div>

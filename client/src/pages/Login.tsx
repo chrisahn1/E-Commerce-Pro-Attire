@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import React, { useState } from 'react';
 // import { jwtDecode } from 'jwt-decode';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const { setAccessToken } = useAuth();
 
   const [email_input, setEmail] = useState('');
@@ -39,7 +39,11 @@ export default function Login() {
       // const decoded_token = jwtDecode(result.accessToken);
       // console.log(decoded_token);
       setAccessToken(result.accessToken);
-      navigate('/');
+      // Send them back to where they were trying to go, or home
+      const from =
+        (location.state as { from?: Location })?.from?.pathname || '/';
+      navigate(from, { replace: true });
+      // navigate('/');
     } catch (error) {
       console.error('Network error:', error);
     }
