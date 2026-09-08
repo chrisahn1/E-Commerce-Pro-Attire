@@ -21,15 +21,16 @@ const ProtectRoute = () => {
   //   return <Navigate to="/" state={{ from: location }} replace />;
   // }
 
-  const { isAuth, isLoading } = useAuth();
+  // const { isAuth, isLoading } = useAuth();
+  const { isAuth } = useAuth();
   const location = useLocation();
 
-  if (isLoading) {
-    return <div>Loading...</div>; // or a spinner component
-  }
+  // if (isLoading) {
+  //   return <div>Loading...</div>; // or a spinner component
+  // }
 
   if (!isAuth) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return <Outlet />;
